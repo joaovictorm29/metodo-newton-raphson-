@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Newton-Raphson - Velocidade = 3.9</title>
+</head>
+<body>
+  <h2>Instante em que v(x) = 3.9 m/s</h2>
+  <p id="resultado"></p>
+
+  <script>
+   function f(x) {
+  return (
+    0.0013 * x ** 7 -
+    0.0731 * x ** 6 +
+    2.2998 * x ** 5 -
+    42.6638 * x ** 4 +
+    468.1974 * x ** 3 -
+    2863.283 * x ** 2 +
+    8268.0159 * x -
+    6926.8843 // Subtraído 3.9 direto
+  );
+}
+
+function fPrime(x) {
+  return (
+    0.0091 * x ** 6 -
+    0.4386 * x ** 5 +
+    11.499 * x ** 4 -
+    170.6552 * x ** 3 +
+    1404.5922 * x ** 2 -
+    5726.566 * x +
+    8268.0159
+  );
+}
+
+function newtonRaphson(x0, tol = 1e-5, maxIter = 100) {
+  let x = x0;
+  for (let i = 0; i < maxIter; i++) {
+    let fx = f(x);
+    let fpx = fPrime(x);
+    if (fpx === 0) {
+      console.error("Derivada zero. Método falhou.");
+      return null;
+    }
+    let xNext = x - fx / fpx;
+    if (Math.abs(xNext - x) < tol) {
+      return xNext;
+    }
+    x = xNext;
+  }
+  console.error("Máximo de iterações atingido.");
+  return null;
+}
+
+const chuteInicial = 15;
+const instante = newtonRaphson(chuteInicial);
+
+console.log("Instante aproximado em que a velocidade é 3.9 m/s:", instante.toFixed(4));
+  </script>
+</body>
+</html>
